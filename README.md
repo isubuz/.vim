@@ -20,8 +20,7 @@ The vim dot files using the [Vundle](https://github.com/VundleVim/Vundle.vim) pl
 the vim plugins. Install Vundle by running the following:
 
 ```sh
-$ git clone https://github.com/VundleVim/Vundle.vim.git
-~/.vim/bundle/Vundle.vim
+$ git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 ```
 
 Once Vundle is installed, open vim and run `:PluginInstall` to install all
