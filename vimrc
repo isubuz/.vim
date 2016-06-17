@@ -74,7 +74,15 @@ set lazyredraw			        " Wait to redraw
 
 " Speed up syntax highlighting
 set nocursorcolumn
-set nocursorline
+
+" Highlight current line
+set cursorline
+hi cursorline cterm=none term=none
+autocmd WinEnter * setlocal cursorline
+autocmd WinLeave * setlocal nocursorline
+
+" Clear last search highlighting with double ESC
+nnoremap <silent> <Esc><Esc> :noh<CR> :call clearmatches()<CR>
 
 " Make Vim handle long lines nicely
 set wrap
@@ -164,6 +172,11 @@ let g:ctrlp_clear_cache_on_exit = 0
 let g:ctrlp_cache_dir = $HOME.'/.cache/ctrlp'
 
 let g:ctrlp_buftag_types = {'go': '--language-force=go --golang-type=ftv'}
+
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/](\.(git|hg|svn)|\_site)$',
+  \ 'file': '\v\.(exe|so|dll|class|png|jpg|jpeg)$',
+\}
 
 " ========== vim-markdown ===========
 let g:vim_markdown_folding_disabled = 1
