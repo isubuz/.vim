@@ -8,6 +8,7 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 
 " My Plugins
+Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'scrooloose/nerdtree'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'altercation/vim-colors-solarized'
@@ -27,6 +28,7 @@ Plugin 'tpope/vim-sensible'
 Plugin 'tpope/vim-surround'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
+Plugin 'edkolev/tmuxline.vim'
 Plugin 'vim-scripts/delimitMate.vim'
 Plugin 'Yggdroot/indentLine'
 Plugin 'Valloric/ListToggle'
@@ -111,9 +113,6 @@ map <C-k> <C-W>k
 map <C-h> <C-W>h
 map <C-l> <C-W>l
 
-" Show open buffers in tabs
-let g:airline#extensions#tabline#enabled = 1
-
 " Fast saving
 nmap <leader>w :w!<cr>
 
@@ -132,52 +131,65 @@ let NERDTreeShowHidden = 1
 let NERDTreeIgnore = ['\.vim$', '\~$', '\.git$', '\.DS_Store']
 
 " Close nerdtree and vim on close file
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
- " ========== vim-markdown ===========
- nmap <C-b> :TagbarToggle<CR>
+" ========== vim-airline ===========
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#fnamemod = ':t'
+let g:airline_powerline_fonts = 1
+let g:airline_left_sep=''
+let g:airline_right_sep=''
 
- " ========== ListToggle ===========
- let g:lt_height = 5
+" ========== Tmuxline ===========
+let g:tmuxline_separators = {
+    \ 'left' : '',
+    \ 'right' : ''}
 
- " ========== ctrlp ===========
- let g:ctrlp_cmd = 'CtrlPMRU'
- let g:ctrlp_working_path_mode = 'ra'
- let g:ctrlp_max_height = 10                
- let g:ctrlp_switch_buffer = 'et'
- let g:ctrlp_mruf_max = 450
- let g:ctrlp_max_files = 0
- let g:ctrlp_use_caching = 1
- let g:ctrlp_clear_cache_on_exit = 0
- let g:ctrlp_cache_dir = $HOME.'/.cache/ctrlp'
 
- let g:ctrlp_buftag_types = {'go': '--language-force=go --golang-type=ftv'}
- 
- " ========== vim-markdown ===========
- let g:vim_markdown_folding_disabled = 1
- let g:vim_markdown_math = 1
- let g:vim_markdown_formatter = 1
- let g:vim_markdown_toml_formatter = 1
- let g:vim_markdown_json_formatter = 1
+" ========== vim-markdown ===========
+nmap <C-b> :TagbarToggle<CR>
 
- " ========== vim-go ===========
- let g:go_fmt_fail_silently = 0
- let g:go_fmt_command = "goimports"
- let g:go_autodetect_gopath = 1
- let g:go_term_enabled = 1
- let g:go_snippet_engine = "neosnippet"
- let g:go_highlight_build_constraints = 1
+" ========== ListToggle ===========
+let g:lt_height = 5
 
- let g:go_highlight_functions = 1
- let g:go_highlight_methods = 1
- let g:go_highlight_fields = 1
- let g:go_highlight_structs = 1
- let g:go_highlight_interfaces = 1
- let g:go_highlight_operators = 1
- let g:go_highlight_build_constants = 1
+" ========== ctrlp ===========
+let g:ctrlp_cmd = 'CtrlPMRU'
+let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_max_height = 10                
+let g:ctrlp_switch_buffer = 'et'
+let g:ctrlp_mruf_max = 450
+let g:ctrlp_max_files = 0
+let g:ctrlp_use_caching = 1
+let g:ctrlp_clear_cache_on_exit = 0
+let g:ctrlp_cache_dir = $HOME.'/.cache/ctrlp'
 
- au FileType go nmap <leader>r <Plug>(go-run)
- au FileType go nmap <leader>b <Plug>(go-build)
- au FileType go nmap <leader>t <Plug>(go-test)
- au FileType go nmap <leader>c <Plug>(go-coverage)
+let g:ctrlp_buftag_types = {'go': '--language-force=go --golang-type=ftv'}
+
+" ========== vim-markdown ===========
+let g:vim_markdown_folding_disabled = 1
+let g:vim_markdown_math = 1
+let g:vim_markdown_formatter = 1
+let g:vim_markdown_toml_formatter = 1
+let g:vim_markdown_json_formatter = 1
+
+" ========== vim-go ===========
+let g:go_fmt_fail_silently = 0
+let g:go_fmt_command = "goimports"
+let g:go_autodetect_gopath = 1
+let g:go_term_enabled = 1
+let g:go_snippet_engine = "neosnippet"
+let g:go_highlight_build_constraints = 1
+
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_structs = 1
+let g:go_highlight_interfaces = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_build_constants = 1
+
+au FileType go nmap <leader>r <Plug>(go-run)
+au FileType go nmap <leader>b <Plug>(go-build)
+au FileType go nmap <leader>t <Plug>(go-test)
+au FileType go nmap <leader>c <Plug>(go-coverage)
 
