@@ -32,6 +32,7 @@ Plugin 'edkolev/tmuxline.vim'
 Plugin 'vim-scripts/delimitMate.vim'
 Plugin 'Yggdroot/indentLine'
 Plugin 'Valloric/ListToggle'
+Plugin 'Shougo/neocomplete.vim'
 Plugin 'docker/docker', {'rtp': '/contrib/syntax/vim'}
 
 call vundle#end()
@@ -80,6 +81,10 @@ set cursorline
 hi cursorline cterm=none term=none
 autocmd WinEnter * setlocal cursorline
 autocmd WinLeave * setlocal nocursorline
+
+" Enable foloding
+set foldmethod=indent
+set foldlevel=99
 
 " Clear last search highlighting with double ESC
 nnoremap <silent> <Esc><Esc> :noh<CR> :call clearmatches()<CR>
@@ -205,4 +210,18 @@ au FileType go nmap <leader>r <Plug>(go-run)
 au FileType go nmap <leader>b <Plug>(go-build)
 au FileType go nmap <leader>t <Plug>(go-test)
 au FileType go nmap <leader>c <Plug>(go-coverage)
+
+" ========== neocomplete ===========
+let g:neocomplete#enable_at_startup = 1
+let g:neocomplete#enable_smart_case = 1
+let g:neocomplete#sources#syntax#min_keyword_length = 3
+
+" <TAB>: completion.
+inoremap <expr><TAB> pumvisible() ? "\<C-n>" :
+    \ <SID>check_back_space() ? "\<TAB>" :
+    \ neocomplete#start_manual_complete()
+function! s:check_back_space() "{{{
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1] =~ '\s'
+endfunction"}}}
 
