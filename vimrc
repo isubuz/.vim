@@ -28,7 +28,7 @@ Plugin 'tpope/vim-sensible'
 Plugin 'tpope/vim-surround'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
-Plugin 'edkolev/tmuxline.vim'
+"Plugin 'edkolev/tmuxline.vim'
 Plugin 'vim-scripts/delimitMate.vim'
 Plugin 'Yggdroot/indentLine'
 Plugin 'Valloric/ListToggle'
@@ -76,6 +76,9 @@ set lazyredraw			        " Wait to redraw
 " Speed up syntax highlighting
 set nocursorcolumn
 
+" 256 colorscheme
+set term=screen-256color
+
 " Highlight current line
 set cursorline
 hi cursorline cterm=none term=none
@@ -111,7 +114,6 @@ set shiftround
 set complete=.,w,b,u,t
 set completeopt=longest,menuone
 
-
 syntax enable
 set background=dark
 let g:solarized_termcolors=256
@@ -119,6 +121,12 @@ let g:solarized_termtrans=1
 colorscheme solarized
 set guifont=Roboto\ Mono:h14
 set guioptions-=L
+
+" Highlight Invisibles. This setting must be after the colorscheme
+" has been set.
+highlight SpecialKey guibg=none ctermbg=none 
+set list
+set listchars=tab:▸\ ,eol:¬
 
 " Better split switching
 map <C-j> <C-W>j
