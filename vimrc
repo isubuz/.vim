@@ -124,7 +124,7 @@ set guioptions-=L
 
 " Highlight Invisibles. This setting must be after the colorscheme
 " has been set.
-highlight SpecialKey guibg=none ctermbg=none 
+highlight SpecialKey guibg=NONE ctermbg=NONE 
 set list
 set listchars=tab:▸\ ,eol:¬
 
