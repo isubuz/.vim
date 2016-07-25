@@ -34,6 +34,15 @@ Plugin 'Yggdroot/indentLine'
 Plugin 'Valloric/ListToggle'
 Plugin 'Shougo/neocomplete.vim'
 Plugin 'docker/docker', {'rtp': '/contrib/syntax/vim'}
+Plugin 'xolox/vim-misc'
+Plugin 'xolox/vim-notes'
+Plugin 'KabbAmine/zeavim.vim', {'on': [
+    \   'Zeavim',
+    \   '<Plug>Zeavim',
+    \   '<Plug>ZVVisSelection',
+    \   '<Plug>ZVKeyDocset',
+    \   '<Plug>ZVMotion'
+    \ ]}
 
 call vundle#end()
 
@@ -125,8 +134,8 @@ set guioptions-=L
 " Highlight Invisibles. This setting must be after the colorscheme
 " has been set.
 highlight SpecialKey guibg=NONE ctermbg=NONE 
-set list
 set listchars=tab:▸\ ,eol:¬
+set nolist
 
 " Better split switching
 map <C-j> <C-W>j
@@ -223,6 +232,12 @@ au FileType go nmap <leader>c <Plug>(go-coverage)
 let g:neocomplete#enable_at_startup = 1
 let g:neocomplete#enable_smart_case = 1
 let g:neocomplete#sources#syntax#min_keyword_length = 3
+
+" ========== vim-notes  ===========
+let g:notes_directories = ['~/docs/notes']
+let g:notes_suffix = '.md'
+let g:notes_title_sync = 'rename_file'
+let g:notes_smart_quotes = 0
 
 " <TAB>: completion.
 inoremap <expr><TAB> pumvisible() ? "\<C-n>" :
