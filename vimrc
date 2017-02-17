@@ -12,6 +12,9 @@ Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'scrooloose/nerdtree'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'altercation/vim-colors-solarized'
+Plugin 'owickstrom/vim-colors-paramount'
+Plugin 'pbrisbin/vim-colors-off'
+Plugin 'sonph/onehalf', {'rtp': 'vim/'}
 Plugin 'easymotion/vim-easymotion'
 Plugin 'elzr/vim-json'
 Plugin 'fatih/vim-go'
@@ -28,14 +31,13 @@ Plugin 'tpope/vim-sensible'
 Plugin 'tpope/vim-surround'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
-"Plugin 'edkolev/tmuxline.vim'
 Plugin 'vim-scripts/delimitMate.vim'
 Plugin 'Yggdroot/indentLine'
 Plugin 'Valloric/ListToggle'
 Plugin 'Shougo/neocomplete.vim'
+Plugin 'Konfekt/FastFold'
 Plugin 'docker/docker', {'rtp': '/contrib/syntax/vim'}
-Plugin 'xolox/vim-misc'
-Plugin 'xolox/vim-notes'
+Plugin 'hashivim/vim-terraform'
 Plugin 'KabbAmine/zeavim.vim', {'on': [
     \   'Zeavim',
     \   '<Plug>Zeavim',
@@ -88,23 +90,25 @@ set nocursorcolumn
 " 256 colorscheme
 set term=screen-256color
 
-" Highlight current line
-set cursorline
+" Do not highlight current line
+set nocursorline
 hi cursorline cterm=none term=none
 autocmd WinEnter * setlocal cursorline
 autocmd WinLeave * setlocal nocursorline
 
-" Enable foloding
-set foldmethod=indent
-set foldlevel=99
+" Enable folding
+set foldmethod=syntax
+set foldnestmax=1
+set nofoldenable
+set foldlevel=0
 
 " Clear last search highlighting with double ESC
 nnoremap <silent> <Esc><Esc> :noh<CR> :call clearmatches()<CR>
 
 " Make Vim handle long lines nicely
-set wrap
-set textwidth=79
-set formatoptions=qrn1
+"set wrap
+"set textwidth=79
+"set formatoptions=qrn1
 
 set autoindent
 set complete-=i
@@ -124,12 +128,13 @@ set complete=.,w,b,u,t
 set completeopt=longest,menuone
 
 syntax enable
-set background=dark
+set background=light
 let g:solarized_termcolors=256
 let g:solarized_termtrans=1
-colorscheme solarized
-set guifont=Roboto\ Mono:h14
-set guioptions-=L
+colorscheme paramount
+
+"highlight SignColumn ctermbg=white
+"highlight LineNr ctermbg=white
 
 " Highlight Invisibles. This setting must be after the colorscheme
 " has been set.
@@ -151,6 +156,13 @@ autocmd BufNewFile *.go setl noet ts=4 sw=4 sts=4
 
 " Markdown settings
 autocmd BufNewFile *.md setl ts=4 sw=4 sts=4 expandtab
+         
+" 2 spaces indentation
+autocmd Filetype html setlocal ts=2 sw=2 expandtab
+autocmd Filetype ruby setlocal ts=2 sw=2 expandtab
+autocmd Filetype tf setlocal ts=2 sw=2 expandtab
+autocmd Filetype md setlocal ts=2 sw=2 expandtab
+autocmd Filetype yaml,yml setlocal ts=2 sts=2 sw=2 expandtab
 
 " ========== vim-nerdtree ===========
 nmap <C-n> :NERDTreeToggle<CR> 
@@ -166,7 +178,9 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 " ========== vim-airline ===========
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
-let g:airline_powerline_fonts = 1
+"let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#left_alt_sep = '|'
+let g:airline_powerline_fonts = 0
 let g:airline_left_sep=''
 let g:airline_right_sep=''
 
@@ -214,6 +228,7 @@ let g:go_autodetect_gopath = 1
 let g:go_term_enabled = 1
 let g:go_snippet_engine = "neosnippet"
 let g:go_highlight_build_constraints = 1
+let g:go_fmt_experimental = 1
 
 let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
@@ -227,17 +242,16 @@ au FileType go nmap <leader>r <Plug>(go-run)
 au FileType go nmap <leader>b <Plug>(go-build)
 au FileType go nmap <leader>t <Plug>(go-test)
 au FileType go nmap <leader>c <Plug>(go-coverage)
+au FileType go nmap <leader>e <Plug>(go-rename)
+au FileType go nmap <leader>i <Plug>(go-info)
+au FileType go nmap <leader>gd <Plug>(go-doc)
+au FileType go nmap <leader>gv <Plug>(go-doc-vertical)
+au FileType go nmap <leader>gb <Plug>(go-doc-browser)
 
 " ========== neocomplete ===========
 let g:neocomplete#enable_at_startup = 1
 let g:neocomplete#enable_smart_case = 1
 let g:neocomplete#sources#syntax#min_keyword_length = 3
-
-" ========== vim-notes  ===========
-let g:notes_directories = ['~/docs/notes']
-let g:notes_suffix = '.md'
-let g:notes_title_sync = 'rename_file'
-let g:notes_smart_quotes = 0
 
 " <TAB>: completion.
 inoremap <expr><TAB> pumvisible() ? "\<C-n>" :
@@ -248,3 +262,12 @@ function! s:check_back_space() "{{{
     return !col || getline('.')[col - 1] =~ '\s'
 endfunction"}}}
 
+" ==== FastFold ====
+"let g:fastfold_savehook = 0
+
+" Preserve folds on save/exit
+"augroup AutoSaveFolds
+    "autocmd!
+    "autocmd BufWinLeave * mkview
+    "autocmd BufWinEnter * silent loadview
+"augroup END
