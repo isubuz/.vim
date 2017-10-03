@@ -1,52 +1,33 @@
 set nocompatible
 filetype off
 
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
+call plug#begin('~/.vim/plugged')
 
 " My Plugins
-Plugin 'christoomey/vim-tmux-navigator'
-Plugin 'scrooloose/nerdtree'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'owickstrom/vim-colors-paramount'
-Plugin 'pbrisbin/vim-colors-off'
-Plugin 'sonph/onehalf', {'rtp': 'vim/'}
-Plugin 'easymotion/vim-easymotion'
-Plugin 'elzr/vim-json'
-Plugin 'fatih/vim-go'
-Plugin 'godlygeek/tabular'
-Plugin 'plasticboy/vim-markdown'
-Plugin 'Lokaltog/vim-powerline'
-Plugin 'ctrlpvim/ctrlp.vim'
-Plugin 'majutsushi/tagbar'
-Plugin 'mileszs/ack.vim'
-Plugin 'scrooloose/nerdcommenter'
-Plugin 'scrooloose/syntastic'
-Plugin 'tpope/vim-fugitive'
-Plugin 'tpope/vim-sensible'
-Plugin 'tpope/vim-surround'
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-Plugin 'vim-scripts/delimitMate.vim'
-Plugin 'Yggdroot/indentLine'
-Plugin 'Valloric/ListToggle'
-Plugin 'Shougo/neocomplete.vim'
-Plugin 'Konfekt/FastFold'
-Plugin 'docker/docker', {'rtp': '/contrib/syntax/vim'}
-Plugin 'hashivim/vim-terraform'
-Plugin 'KabbAmine/zeavim.vim', {'on': [
-    \   'Zeavim',
-    \   '<Plug>Zeavim',
-    \   '<Plug>ZVVisSelection',
-    \   '<Plug>ZVKeyDocset',
-    \   '<Plug>ZVMotion'
-    \ ]}
+Plug 'alvan/vim-closetag'
+Plug 'airblade/vim-gitgutter'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'docker/docker', {'rtp': '/contrib/syntax/vim'}
+Plug 'dracula/vim'
+Plug 'easymotion/vim-easymotion'
+Plug 'elzr/vim-json'
+Plug 'ElmCast/elm-vim'
+Plug 'fatih/vim-go', {'do': ':GoInstallBinaries', 'commit': 'b319ed9753906a0737bfbd5d5e69b443966a8cd8'}
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+Plug 'hashivim/vim-terraform'
+Plug 'leafgarland/typescript-vim'
+Plug 'othree/html5.vim'
+Plug 'Quramy/vim-js-pretty-template'
+Plug 'Quramy/tsuquyomi'
+Plug 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdcommenter'
+Plug 'Shougo/neocomplete.vim'
+Plug 'Valloric/ListToggle'
+Plug 'w0rp/ale'
+Plug 'Yggdroot/indentLine'
 
-call vundle#end()
+call plug#end()
 
 filetype plugin indent on
 
@@ -58,6 +39,7 @@ set number			            " Show line numbers
 set backspace=indent,eol,start	" Makes backspace key more powerful
 set showcmd			            " Show me what I'm typing
 set showmode			        " Show current mode
+set clipboard=unnamed           " Copy into mac clipboard
 
 set noswapfile			        " Don't use swapfile
 set nobackup			        " Don't create backup files
@@ -128,10 +110,9 @@ set complete=.,w,b,u,t
 set completeopt=longest,menuone
 
 syntax enable
-set background=light
-let g:solarized_termcolors=256
-let g:solarized_termtrans=1
-colorscheme paramount
+set background=dark
+colorscheme dracula
+
 
 "highlight SignColumn ctermbg=white
 "highlight LineNr ctermbg=white
@@ -170,56 +151,10 @@ noremap <Leader>n :NERDTreeToggle<CR>
 noremap <Leader>f :NERDTreeFind<CR>
 
 let NERDTreeShowHidden = 1
-let NERDTreeIgnore = ['\.vim$', '\~$', '\.git$', '\.DS_Store']
+let NERDTreeIgnore = ['\.vim$', '\~$', '\.git$', '\.DS_Store', '\.idea']
 
 " Close nerdtree and vim on close file
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-
-" ========== vim-airline ===========
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#fnamemod = ':t'
-"let g:airline#extensions#tabline#left_sep = ' '
-let g:airline#extensions#tabline#left_alt_sep = '|'
-let g:airline_powerline_fonts = 0
-let g:airline_left_sep=''
-let g:airline_right_sep=''
-
-" ========== Tmuxline ===========
-let g:tmuxline_separators = {
-    \ 'left' : '',
-    \ 'right' : ''}
-
-
-" ========== vim-markdown ===========
-nmap <C-b> :TagbarToggle<CR>
-
-" ========== ListToggle ===========
-let g:lt_height = 5
-
-" ========== ctrlp ===========
-let g:ctrlp_cmd = 'CtrlPMRU'
-let g:ctrlp_working_path_mode = 'ra'
-let g:ctrlp_max_height = 10                
-let g:ctrlp_switch_buffer = 'et'
-let g:ctrlp_mruf_max = 450
-let g:ctrlp_max_files = 0
-let g:ctrlp_use_caching = 1
-let g:ctrlp_clear_cache_on_exit = 0
-let g:ctrlp_cache_dir = $HOME.'/.cache/ctrlp'
-
-let g:ctrlp_buftag_types = {'go': '--language-force=go --golang-type=ftv'}
-
-let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/](\.(git|hg|svn)|\_site)$',
-  \ 'file': '\v\.(exe|so|dll|class|png|jpg|jpeg)$',
-\}
-
-" ========== vim-markdown ===========
-let g:vim_markdown_folding_disabled = 1
-let g:vim_markdown_math = 1
-let g:vim_markdown_formatter = 1
-let g:vim_markdown_toml_formatter = 1
-let g:vim_markdown_json_formatter = 1
 
 " ========== vim-go ===========
 let g:go_fmt_fail_silently = 0
@@ -227,8 +162,10 @@ let g:go_fmt_command = "goimports"
 let g:go_autodetect_gopath = 1
 let g:go_term_enabled = 1
 let g:go_snippet_engine = "neosnippet"
-let g:go_highlight_build_constraints = 1
 let g:go_fmt_experimental = 1
+let g:go_list_type = "quickfix"
+let g:go_auto_type_info = 1
+let g:go_auto_sameids = 0
 
 let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
@@ -237,6 +174,9 @@ let g:go_highlight_structs = 1
 let g:go_highlight_interfaces = 1
 let g:go_highlight_operators = 1
 let g:go_highlight_build_constants = 1
+let g:go_highlight_build_constraints = 1
+let g:go_highlight_types = 1
+let g:go_highlight_extra_types = 1
 
 au FileType go nmap <leader>r <Plug>(go-run)
 au FileType go nmap <leader>b <Plug>(go-build)
@@ -247,8 +187,23 @@ au FileType go nmap <leader>i <Plug>(go-info)
 au FileType go nmap <leader>gd <Plug>(go-doc)
 au FileType go nmap <leader>gv <Plug>(go-doc-vertical)
 au FileType go nmap <leader>gb <Plug>(go-doc-browser)
+map <C-n> :cnext<CR>
+map <C-m> :cprevious<CR>
+nnoremap <leader>a :cclose<CR>
 
-" ========== neocomplete ===========
+" run :GoBuild or :GoTestCompile based on the go file
+function! s:build_go_files()
+  let l:file = expand('%')
+  if l:file =~# '^\f\+_test\.go$'
+    call go#test#Test(0, 1)
+  elseif l:file =~# '^\f\+\.go$'
+    call go#cmd#Build(0)
+  endif
+endfunction
+
+autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
+
+" =========== neocomplete =============
 let g:neocomplete#enable_at_startup = 1
 let g:neocomplete#enable_smart_case = 1
 let g:neocomplete#sources#syntax#min_keyword_length = 3
@@ -262,12 +217,39 @@ function! s:check_back_space() "{{{
     return !col || getline('.')[col - 1] =~ '\s'
 endfunction"}}}
 
-" ==== FastFold ====
-"let g:fastfold_savehook = 0
+nmap ∆ <c-w>w<c-e><c-w>w
+nmap ˚ <c-w>w<c-y><c-w>w
 
-" Preserve folds on save/exit
-"augroup AutoSaveFolds
-    "autocmd!
-    "autocmd BufWinLeave * mkview
-    "autocmd BufWinEnter * silent loadview
-"augroup END
+" Don't screw up folds when inserting text that might affect them, until
+" leaving insert mode. Foldmethod is local to the window. Protect against
+" screwing up folding when switching between windows.
+autocmd InsertEnter * if !exists('w:last_fdm') | let w:last_fdm=&foldmethod | setlocal foldmethod=manual | endif
+autocmd InsertLeave,WinLeave * if exists('w:last_fdm') | let &l:foldmethod=w:last_fdm | unlet w:last_fdm | endif
+
+fun! ReloadBuffers() 
+    set noconfirm
+    bufdo e!
+    set confirm
+    syntax enable
+endfun
+
+" ============= vim-typescript =============
+let g:typescript_compiler_binary = 'tsc'
+let g:typescript_compiler_options = ''
+autocmd QuickFixCmdPost [^l]* nested cwindow
+autocmd QuickFixCmdPost    l* nested lwindow
+
+autocmd FileType javascript JsPreTmpl html
+autocmd FileType typescript syn clear foldBraces
+
+" == json ==
+let g:vim_json_syntax_conceal = 0
+
+call neocomplete#util#set_default_dictionary(
+  \ 'g:neocomplete#sources#omni#input_patterns',
+  \ 'elm',
+  \ '\.')
+
+let g:ale_set_highlights = 0
+let g:ycm_keep_logfiles = 1
+let g:ycm_log_level = 'debug'
