@@ -6,23 +6,23 @@ call plug#begin('~/.vim/plugged')
 " My Plugins
 Plug 'alvan/vim-closetag'
 Plug 'airblade/vim-gitgutter'
-Plug 'ctrlpvim/ctrlp.vim'
 Plug 'docker/docker', {'rtp': '/contrib/syntax/vim'}
-Plug 'dracula/vim'
 Plug 'easymotion/vim-easymotion'
 Plug 'elzr/vim-json'
-Plug 'ElmCast/elm-vim'
 Plug 'fatih/vim-go', {'do': ':GoInstallBinaries', 'commit': 'b319ed9753906a0737bfbd5d5e69b443966a8cd8'}
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+Plug 'jiangmiao/auto-pairs'
 Plug 'hashivim/vim-terraform'
-Plug 'leafgarland/typescript-vim'
-Plug 'othree/html5.vim'
-Plug 'Quramy/vim-js-pretty-template'
-Plug 'Quramy/tsuquyomi'
+Plug 'mileszs/ack.vim'
+Plug 'rakr/vim-two-firewatch'
 Plug 'scrooloose/nerdtree'
 Plug 'scrooloose/nerdcommenter'
-Plug 'Shougo/neocomplete.vim'
+Plug 'skywind3000/asyncrun.vim'
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'wokalski/autocomplete-flow'
+Plug 'Shougo/neosnippet'
+Plug 'Shougo/neosnippet-snippets'
 Plug 'Valloric/ListToggle'
 Plug 'w0rp/ale'
 Plug 'Yggdroot/indentLine'
@@ -69,9 +69,6 @@ set lazyredraw			        " Wait to redraw
 " Speed up syntax highlighting
 set nocursorcolumn
 
-" 256 colorscheme
-set term=screen-256color
-
 " Do not highlight current line
 set nocursorline
 hi cursorline cterm=none term=none
@@ -110,9 +107,11 @@ set complete=.,w,b,u,t
 set completeopt=longest,menuone
 
 syntax enable
-set background=dark
-colorscheme dracula
-
+set background=light
+let g:two_firewatch_italics=1
+let g:solarized_termcolors=16
+colorscheme two-firewatch
+set termguicolors
 
 "highlight SignColumn ctermbg=white
 "highlight LineNr ctermbg=white
@@ -161,7 +160,6 @@ let g:go_fmt_fail_silently = 0
 let g:go_fmt_command = "goimports"
 let g:go_autodetect_gopath = 1
 let g:go_term_enabled = 1
-let g:go_snippet_engine = "neosnippet"
 let g:go_fmt_experimental = 1
 let g:go_list_type = "quickfix"
 let g:go_auto_type_info = 1
@@ -203,20 +201,6 @@ endfunction
 
 autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
 
-" =========== neocomplete =============
-let g:neocomplete#enable_at_startup = 1
-let g:neocomplete#enable_smart_case = 1
-let g:neocomplete#sources#syntax#min_keyword_length = 3
-
-" <TAB>: completion.
-inoremap <expr><TAB> pumvisible() ? "\<C-n>" :
-    \ <SID>check_back_space() ? "\<TAB>" :
-    \ neocomplete#start_manual_complete()
-function! s:check_back_space() "{{{
-    let col = col('.') - 1
-    return !col || getline('.')[col - 1] =~ '\s'
-endfunction"}}}
-
 nmap ∆ <c-w>w<c-e><c-w>w
 nmap ˚ <c-w>w<c-y><c-w>w
 
@@ -233,23 +217,39 @@ fun! ReloadBuffers()
     syntax enable
 endfun
 
-" ============= vim-typescript =============
-let g:typescript_compiler_binary = 'tsc'
-let g:typescript_compiler_options = ''
 autocmd QuickFixCmdPost [^l]* nested cwindow
 autocmd QuickFixCmdPost    l* nested lwindow
 
-autocmd FileType javascript JsPreTmpl html
 autocmd FileType typescript syn clear foldBraces
+autocmd Filetype html,ruby,javascript,json,less,css,scss setlocal ts=2 sts=2 sw=2
+autocmd BufWritePost *.js AsyncRun -post=checktime ./node_modules/.bin/eslint --fix %L
+
+"function! s:format_js()
+  "call AsyncRun -post=checktime ./node_modules/.bin/eslint --fix %
+"endfunction
+
+autocmd FileType js map <leader>b :<C-u>call <SID>format_js()<CR>
 
 " == json ==
 let g:vim_json_syntax_conceal = 0
 
-call neocomplete#util#set_default_dictionary(
-  \ 'g:neocomplete#sources#omni#input_patterns',
-  \ 'elm',
-  \ '\.')
+"let g:ale_set_highlights = 0
+let g:ale_fixers = {
+ \ 'javascript': ['eslint', 'prettier_eslint']
+ \ }
 
-let g:ale_set_highlights = 0
 let g:ycm_keep_logfiles = 1
 let g:ycm_log_level = 'debug'
+
+cnoreabbrev Ack Ack!
+nnoremap <Leader>z :Ack! <cword><CR>
+
+let g:deoplete#enable_at_startup = 1
+let g:neosnippet#enable_completed_snippet = 1
+inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+
+" Resize splits to equal sizes
+autocmd VimResized * wincmd =
+set equalalways 
+
+let g:closetag_filenames = '*.html,*.js,*.jsx'
