@@ -10,6 +10,7 @@ Plug 'docker/docker', {'rtp': '/contrib/syntax/vim'}
 Plug 'easymotion/vim-easymotion'
 Plug 'elzr/vim-json'
 Plug 'fatih/vim-go', {'do': ':GoInstallBinaries', 'commit': 'b319ed9753906a0737bfbd5d5e69b443966a8cd8'}
+Plug 'gcmt/taboo.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'jiangmiao/auto-pairs'
