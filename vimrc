@@ -54,7 +54,7 @@ set laststatus=2
 set hidden
 
 set ruler			            " Show cursor position all the time
-au FocusLost * :wa		        " Set vim to save the file on focus out
+au FocusLost * silent! :wa      " Set vim to save the file on focus out
 
 set fileformats=unix,mac,dos	" Prefex unix over OSX over Windows formats
 
@@ -223,11 +223,11 @@ autocmd QuickFixCmdPost    l* nested lwindow
 
 autocmd FileType typescript syn clear foldBraces
 autocmd Filetype html,ruby,javascript,json,less,css,scss setlocal ts=2 sts=2 sw=2
-autocmd BufWritePost *.js AsyncRun -post=checktime ./node_modules/.bin/eslint --fix %L
+autocmd BufWritePost *.js AsyncRun -post=checktime ./node_modules/.bin/eslint --fix %
 
-"function! s:format_js()
-  "call AsyncRun -post=checktime ./node_modules/.bin/eslint --fix %
-"endfunction
+function! s:format_js()
+  call AsyncRun -post=checktime ./node_modules/.bin/eslint --fix %
+endfunction
 
 autocmd FileType js map <leader>b :<C-u>call <SID>format_js()<CR>
 
