@@ -156,6 +156,12 @@ let NERDTreeIgnore = ['\.vim$', '\~$', '\.git$', '\.DS_Store', '\.idea']
 " Close nerdtree and vim on close file
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
+" Open NERDTree automatically when starting a directory or if                                                                                                                                                                                 
+" no files are specified                                                                                                                                                                                                                      
+autocmd StdinReadPre * let s:std_in=1                                                                                                                                                                                                         
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif                                                                                                                                                                   
+autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif  
+
 " ========== vim-go ===========
 let g:go_fmt_fail_silently = 0
 let g:go_fmt_command = "goimports"
