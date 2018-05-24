@@ -11,6 +11,7 @@ Plug 'easymotion/vim-easymotion'
 Plug 'elzr/vim-json'
 Plug 'fatih/vim-go', {'do': ':GoInstallBinaries', 'commit': 'b319ed9753906a0737bfbd5d5e69b443966a8cd8'}
 Plug 'gcmt/taboo.vim'
+Plug 'jacoborus/tender.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'jiangmiao/auto-pairs'
@@ -137,9 +138,9 @@ autocmd BufNewFile *.go setl noet ts=4 sw=4 sts=4
 
 " Markdown settings
 autocmd BufNewFile *.md setl ts=4 sw=4 sts=4 expandtab
-         
+
 " 2 spaces indentation
-autocmd Filetype html setlocal ts=2 sw=2 expandtab
+autocmd Filetype html,css,js setlocal ts=2 sw=2 expandtab
 autocmd Filetype ruby setlocal ts=2 sw=2 expandtab
 autocmd Filetype tf setlocal ts=2 sw=2 expandtab
 autocmd Filetype md setlocal ts=2 sw=2 expandtab
@@ -158,8 +159,8 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 
 " Open NERDTree automatically when starting a directory or if                                                                                                                                                                                 
 " no files are specified                                                                                                                                                                                                                      
-autocmd StdinReadPre * let s:std_in=1                                                                                                                                                                                                         
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif                                                                                                                                                                   
+autocmd StdinReadPre * let s:std_in=1                                                                                                                                                                                        
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif  
 
 " ========== vim-go ===========
@@ -229,7 +230,7 @@ autocmd QuickFixCmdPost    l* nested lwindow
 
 autocmd FileType typescript syn clear foldBraces
 autocmd Filetype html,ruby,javascript,json,less,css,scss setlocal ts=2 sts=2 sw=2
-autocmd BufWritePost *.js AsyncRun -post=checktime ./node_modules/.bin/eslint --fix %
+"autocmd BufWritePost *.js AsyncRun -post=checktime ./node_modules/.bin/eslint --fix %
 
 function! s:format_js()
   call AsyncRun -post=checktime ./node_modules/.bin/eslint --fix %
@@ -241,9 +242,13 @@ autocmd FileType js map <leader>b :<C-u>call <SID>format_js()<CR>
 let g:vim_json_syntax_conceal = 0
 
 "let g:ale_set_highlights = 0
-let g:ale_fixers = {
- \ 'javascript': ['eslint', 'prettier_eslint']
- \ }
+"let g:ale_fixers = {
+ "\ 'javascript': ['eslint', 'prettier_eslint']
+ "\ }
+let g:ale_fixers = {}
+let g:ale_fixers['javascript'] = ['prettier']
+let g:ale_javascript_prettier_use_local_config = 1
+let g:ale_fix_on_save = 1
 
 let g:ycm_keep_logfiles = 1
 let g:ycm_log_level = 'debug'
@@ -260,3 +265,4 @@ autocmd VimResized * wincmd =
 set equalalways 
 
 let g:closetag_filenames = '*.html,*.js,*.jsx'
+let g:indentLine_char = '┆'
