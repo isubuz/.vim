@@ -5,6 +5,7 @@ call plug#begin('~/.vim/plugged')
 
 " My Plugins
 Plug 'alvan/vim-closetag'
+Plug 'altercation/vim-colors-solarized'
 Plug 'airblade/vim-gitgutter'
 Plug 'docker/docker', {'rtp': '/contrib/syntax/vim'}
 Plug 'easymotion/vim-easymotion'
@@ -17,9 +18,9 @@ Plug 'junegunn/fzf.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'hashivim/vim-terraform'
 Plug 'mileszs/ack.vim'
-Plug 'rakr/vim-two-firewatch'
 Plug 'scrooloose/nerdtree'
 Plug 'scrooloose/nerdcommenter'
+Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'skywind3000/asyncrun.vim'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'wokalski/autocomplete-flow'
@@ -27,6 +28,8 @@ Plug 'Shougo/neosnippet'
 Plug 'Shougo/neosnippet-snippets'
 Plug 'Valloric/ListToggle'
 Plug 'w0rp/ale'
+Plug 'tpope/vim-fugitive'
+Plug 'low-ghost/nerdtree-fugitive'
 Plug 'Yggdroot/indentLine'
 
 call plug#end()
@@ -109,11 +112,9 @@ set complete=.,w,b,u,t
 set completeopt=longest,menuone
 
 syntax enable
-set background=light
-let g:two_firewatch_italics=1
-let g:solarized_termcolors=16
-colorscheme two-firewatch
-set termguicolors
+set t_Co=256
+set background=dark
+colorscheme solarized
 
 "highlight SignColumn ctermbg=white
 "highlight LineNr ctermbg=white
@@ -152,7 +153,8 @@ noremap <Leader>n :NERDTreeToggle<CR>
 noremap <Leader>f :NERDTreeFind<CR>
 
 let NERDTreeShowHidden = 1
-let NERDTreeIgnore = ['\.vim$', '\~$', '\.git$', '\.DS_Store', '\.idea']
+let NERDTreeIgnore = ['\.vim$', '\~$', '\.git$', '\.DS_Store', '\.idea', '\.retry', '\.pyc']
+let NERDTreeMapOpenInTag = '<ENTER>'
 
 " Close nerdtree and vim on close file
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
@@ -265,4 +267,7 @@ autocmd VimResized * wincmd =
 set equalalways 
 
 let g:closetag_filenames = '*.html,*.js,*.jsx'
-let g:indentLine_char = '┆'
+
+"======= Key bindings =======
+" bind fzf file search
+map ; :Files<CR> 
